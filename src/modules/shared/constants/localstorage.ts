@@ -1,0 +1,4 @@
+const LOCALSTORAGE_KEYS = {
+  LOCALE_KEY: "LOCALE_KEY"
+}
+export default LOCALSTORAGE_KEYS;
