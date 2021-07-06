@@ -24,7 +24,7 @@ class Footer extends React.Component<IProps> {
     let locale = this.props.locale;
 
     return (
-        <Flex justifyContent={"center"} pb="2">
+        <Flex justifyContent={"center"} pb="2" mt="4">
           <Spacer space="s">
             <FlagUsa className={"cursor-pointer"} width={locale === 'en' ? 24 : 18}
                      onClick={() => this.updateLocale("en")}/>

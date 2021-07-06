@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
-import { IAction, LOCALES_ACTIONS } from "./actions";
+import { IAction, LOCALES_ACTIONS } from "./actions.constants";
 import LOCALSTORAGE_KEYS from "../constants/localstorage";
+import { callsReducer } from './../../calls/redux/reducers'
 
 // TODO , add navigator.language or use cookie if the server can set the locale cookie
 export const initialIntlState = {
@@ -20,5 +21,6 @@ export function intlReducer(state = initialIntlState, action: IAction) {
 
 
 export default combineReducers({
-  intlReducer
+  intlReducer,
+  callsReducer
 })

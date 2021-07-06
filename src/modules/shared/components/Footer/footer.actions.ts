@@ -1,5 +1,5 @@
 // fixme
-import { LOCALES_ACTIONS } from "../../redux/actions";
+import { LOCALES_ACTIONS } from "../../redux/actions.constants";
 
 export function updateLocale(payload: string) {
   return {

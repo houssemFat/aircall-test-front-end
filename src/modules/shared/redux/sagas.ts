@@ -1,5 +1,5 @@
 
-import { IAction } from "./actions";
+import { IAction } from "./actions.constants";
 
 
 

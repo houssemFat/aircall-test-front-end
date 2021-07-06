@@ -1,12 +1,19 @@
+@import url("./reset.css");
+@import url("./font.css");
+@import url("./page.css");
+
 body {
     margin: 0;
     display: flex;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    background: #eaefef;
 }
 
 
 html, body {
+    font-family: Fellix, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
     padding: 0;
     margin: 0;
     min-height: 100vh;
@@ -34,3 +41,4 @@ code {
     max-width: 1240px;
     margin: 0 auto;
 }
+

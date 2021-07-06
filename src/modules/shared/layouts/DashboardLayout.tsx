@@ -14,9 +14,10 @@ export class DashboardLayout extends React.Component<Props> {
     const {children} = this.props
 
     return (
-        <Flex alignItems="middle" justifyContent="center" flexDirection="column" height={"100%"}>
+        <Flex alignItems="middle"  className={"w-full"} justifyContent="center" flexDirection="column" height={"100%"}
+              >
           {/* Container */}
-          <Flex flexGrow={1}>
+          <Flex flexGrow={1} justifyContent="center">
             {children}
           </Flex>
           <Footer/>
