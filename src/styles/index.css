@@ -54,7 +54,7 @@ code {
         flex-direction: column !important;
     }
 
-    .xs\:align-left {
+    .xs\:align-items-left {
         /* use style component to override Reactor */
         align-items: start !important;
     }

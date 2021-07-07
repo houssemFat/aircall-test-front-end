@@ -5,6 +5,7 @@ const common = {
   'common.save': 'Save',
   'common.back': 'Back',
   'common.next': 'Next',
+  'common.retry': 'Retry',
   'common.previous': 'Previous',
   'common.entries_by_page': 'Entries per page',
 }

@@ -4,13 +4,17 @@ import CallListItem from "./CallsListItem";
 
 export interface ICallsDataProps {
   data: Array<Call>,
-  onChildAction : Function,
+  onChildAction: Function,
   checkStatusByIds: { [key: number]: boolean; }
 }
 
-
+/**
+ * Display simple list of calls
+ * @param props
+ * @constructor
+ */
 function CallsListStyleData(props: ICallsDataProps) {
-  let {data, onChildAction, checkStatusByIds } = props;
+  let {data, onChildAction, checkStatusByIds} = props;
   return (
       <div>
 

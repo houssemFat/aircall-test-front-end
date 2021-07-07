@@ -5,7 +5,7 @@ import {
   Flex,
   TextFieldInput,
   Typography,
-  SpinnerOutlined, EditOutlined
+  SpinnerOutlined, EditOutlined, CounterBadge
 } from "@aircall/tractor";
 import React, { useState } from "react";
 
@@ -30,7 +30,12 @@ function CallNotesComponent({id, intl, notes, onChildAction}: CallViewNotesProps
   const [sendNote, {loading}] = useMutation(ADD_NOTE_MUTATION);
   return (
       <Flex flexDirection={"column"} width={"100%"}>
-        <Typography variant="subheading2" mb={2}>Notes {notes.length}</Typography>
+        <Typography variant="subheading" mb={2}>
+          <Spacer>
+            Notes
+            <CounterBadge count={notes.length} variant="black"/>
+          </Spacer>
+        </Typography>
 
         {
           notes.map((note, index) => {
@@ -46,17 +51,17 @@ function CallNotesComponent({id, intl, notes, onChildAction}: CallViewNotesProps
             </Flex>
           })
         }
-        <Flex  mt={15}>
+        <Flex mt={15}>
 
           <Spacer direction="vertical" space={"s"} width={"100%"}>
             <TextFieldInput
                 value={newNoteContent}
                 onChange={event => setNewNoteContent(event.target.value)}
                 placeholder={intl.formatMessage({id: "calls.actions.add_note_input"})} size="large"/>
-            <Flex justifyContent="flex-end" >
+            <Flex justifyContent="flex-end">
               <Button size="small" variant="primary"
                       onClick={(event) => {
-                        sendNote({variables: {id: id, content : newNoteContent}})
+                        sendNote({variables: {id: id, content: newNoteContent}})
                         onChildAction();
                         event.stopPropagation()
                       }} disabled={!newNoteContent}>

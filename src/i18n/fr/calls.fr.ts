@@ -10,6 +10,7 @@ const calls = {
   'call.fields.is_archived': 'Archivé',
   'call.fields.call_type': 'Type d\'appel',
   'call.fields.created_at': 'Créé le ',
+  'call.fields.created_humanized': 'Créé depuis',
   'call.fields.notes': 'Notes',
   'call.fields.actions': 'Actions',
 
@@ -22,5 +23,7 @@ const calls = {
 
   'calls.actions.add_note_input': 'Ajouter une note',
   'calls.actions.archive': 'Archiver',
+
+  'call.fields.status': 'Statut'
 }
 export default calls;

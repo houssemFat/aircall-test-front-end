@@ -23,5 +23,7 @@ const calls = {
 
   'calls.actions.add_note_input': 'Add new note',
   'calls.actions.archive': 'Archive',
+
+  'call.fields.status' : 'Status'
 }
 export default calls;

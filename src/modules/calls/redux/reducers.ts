@@ -4,10 +4,10 @@ import { IAction } from "../../shared/redux/actions.constants";
 export const initialState = {
   totalItems: Infinity,
   currentPageIndex: 0,
-  loading: false
+  checkedItems: {}
 }
 
-export function  callsReducer(state = initialState, action: IAction) {
+export function callsReducer(state = initialState, action: IAction) {
   // todo
   return state;
 }

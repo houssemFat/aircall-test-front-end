@@ -15,7 +15,7 @@ import {
 } from "@aircall/tractor";
 import { FormattedMessage, injectIntl, IntlShape } from "react-intl";
 import { ViewStyle } from "../../models/types";
-import { CallsListPage } from "./CallsList.page";
+import  CallsListPage  from "./CallsList.page";
 import { GroupDateValues } from "../../../shared/utils/DateHelpers";
 
 
@@ -68,15 +68,10 @@ class CallsList extends React.Component<IProps, IState> {
     });
   };
 
-  updateCheckStatus = (actionType: string) => {
-    this.setState({
-      checkAllActionType: actionType
-    });
-  };
 
   render() {
     return (
-        <Flex flexDirection="column" flexGrow={1} className="w-full" style={{background: 'red'}}>
+        <Flex flexDirection="column" flexGrow={1} className="w-full">
           <Tractor>
             <div>
               <Spacer space="s" direction="vertical" py={20}>

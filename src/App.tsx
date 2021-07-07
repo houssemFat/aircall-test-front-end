@@ -21,7 +21,6 @@ import i18nMessages from "./i18n";
 import { IRootState } from "./modules/shared/redux/store";
 import { CallsList, CallView } from "./modules/calls/components";
 import { apolloClient } from "./modules/shared/graphql/client";
-import { CALLS_SUBSCRIPTION } from "./modules/calls/graphql/calls.subscriptions";
 
 interface IProps {
   locale: string
@@ -31,17 +30,6 @@ interface IProps {
 const Greeting = () => <FormattedMessage id="common.welcome"/>;
 const Calls = () => <FormattedMessage id="common.calls"/>;
 
-function LatestComment() {
-  const [count, setCount] = useState(0)
-  const {data, loading} = useSubscription(
-      CALLS_SUBSCRIPTION
-  );
-  if (data) {
-    console.log(data)
-    return <h4>New comment: {!loading && count}</h4>;
-  }
-  return <></>
-}
 
 class App extends React.Component<IProps> {
   render() {
@@ -82,7 +70,6 @@ class App extends React.Component<IProps> {
                   </Switch>
                 </Router>
 
-                <LatestComment/>
               </Flex>
 
             </DashboardLayout>

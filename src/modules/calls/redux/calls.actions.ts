@@ -1,8 +1,8 @@
 import { CALLS_ACTIONS } from "./calls.constants";
 
-export function loadList(payload: string) {
+export function updateCheckedListItem(payload: { [key: string]: boolean; } ) {
   return {
-    type: CALLS_ACTIONS.CALL_LOAD_LIST,
+    type: CALLS_ACTIONS.CALLS_UPDATE_CHECKLIST,
     payload
   };
 }

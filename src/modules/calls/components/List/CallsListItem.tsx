@@ -1,4 +1,4 @@
-import React from "react";
+import React  from "react";
 import {
   Spacer,
   ArchiveOutlined,
@@ -6,12 +6,12 @@ import {
   Flex,
   ToDoOutlined,
   SpinnerOutlined,
-  SquircleButton, OutboundOutlined, InboundOutlined,  Tag, Checkbox, CallFilled
+  SquircleButton, OutboundOutlined, InboundOutlined, Tag, Checkbox, CallFilled, Typography
 } from "@aircall/tractor";
 import { useHistory } from 'react-router';
 import { FormattedMessage, injectIntl, IntlShape } from "react-intl";
 import { useMutation } from "@apollo/client";
-import { formatDistance } from 'date-fns'
+import { format, formatDistance } from 'date-fns'
 
 import { ARCHIVE_CALL_MUTATION } from "../../graphql/calls.mutations";
 import { dateFnsLocalesByAppLocale, HumanizeMilleSeconds } from "../../../shared/utils/DateHelpers";
@@ -25,15 +25,15 @@ interface CallsListItemProps {
   call: Call,
   onChildAction: Function,
   intl: IntlShape,
-  checked?: boolean,
+  checked : boolean
 }
 
 /**
  * Render a single item of list
- * @param {Call} call Call object
- * @param {string} locale
- * @param {boolean} checked
- * @param {Function} onChildAction function to parent element
+ * @param call
+ * @param intl
+ * @param checked
+ * @param onChildAction
  * @constructor
  */
 const CallListItem = ({call, intl, checked, onChildAction}: CallsListItemProps) => {
@@ -46,10 +46,17 @@ const CallListItem = ({call, intl, checked, onChildAction}: CallsListItemProps) 
       <Flex className={"page-row page-row-data cursor-pointer"} alignItems={"center"} onClick={() => {
         history.push('/calls/' + call.id)
       }}>
-        <Flex className={ListFieldStyle.checkbox}>
-          <Checkbox checked={checked}/>
+        <Flex className={ListFieldStyle.checkbox} onClick={event => {
+          event.stopPropagation();
+        }}>
+          <Checkbox
+              checked={checked}
+              onChange={newStatus => {
+                console.log(newStatus);
+                onChildAction({operation: 'check', payload: {id: call.id, checked: newStatus}})
+              }}/>
         </Flex>
-        <Flex className={"xs:flex-column xs:align-left"} flexGrow={1} alignItems={"center"}>
+        <Flex className={"xs:flex-column xs:align-items-left"} flexGrow={1} alignItems={"center"}>
 
           <Flex className={ListFieldStyle.phone}>
             <Spacer space="0" alignItems={"center"}>
@@ -85,17 +92,20 @@ const CallListItem = ({call, intl, checked, onChildAction}: CallsListItemProps) 
               <IsArchivedMessage/>
               {/*<TrashFilled size="12px" />*/}
             </Tag> : ''
+
           }
 
         </Flex>
-          <Flex className={ListFieldStyle.createdAt}>
+          <Flex className={ListFieldStyle.createdAt} flexDirection={"column"}>
+
             {
               formatDistance(
                   new Date(),
                   new Date(call.created_at),
                   {locale: dateFnsLocalesByAppLocale[locale]} // Pass the locale as an option
               )}
-
+            <Typography variant="overline2"
+                        pt={2}>{format(new Date(call.created_at), 'iii HH:MM:SS', {locale: dateFnsLocalesByAppLocale[locale]})}</Typography>
           </Flex>
           <Flex className={ListFieldStyle.icon + ' xs:hidden'}>
             <CounterBadge size="small" count={call.notes.length}>
@@ -109,9 +119,9 @@ const CallListItem = ({call, intl, checked, onChildAction}: CallsListItemProps) 
             <Spacer space="0" p={0}>
               <SquircleButton
                   onClick={(event) => {
-                    archive({variables: {id: call.id}})
-                    onChildAction({operation: 'archive'})
                     event.stopPropagation()
+                    archive({variables: {id: call.id}})
+                    onChildAction({operation: 'archive', payload: {id: call.id}})
                   }} size="xSmall" icon={loading ? SpinnerOutlined : ArchiveOutlined} variant="default" shadow={false}
                   spin={loading}/>
 
@@ -121,5 +131,4 @@ const CallListItem = ({call, intl, checked, onChildAction}: CallsListItemProps) 
       </Flex>
   );
 }
-
-export default injectIntl(CallListItem);
+export default  injectIntl(CallListItem);

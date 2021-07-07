@@ -27,7 +27,7 @@ function RenderGroup(props: ICallsGroupEntryProps) {
     <Accordion.Item id={index}>
       <Accordion.Header>
         <Box backgroundColor={activeId === index ? 'blue' : '#fff'} p="s" width="100%" cursor="pointer">
-          <Typography>{label}</Typography>
+          <Typography variant="body">{label}</Typography>
         </Box>
       </Accordion.Header>
       <Accordion.Body>

@@ -1,6 +1,7 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import React, { useState } from 'react';
 import {
+  Button,
   Checkbox, ChevronDownOutlined,
   Divider,
   Dropdown,
@@ -21,51 +22,131 @@ import { CheckAllActionType, LIST_COLUMNS, ListFieldStyle, ViewStyle } from "../
 import { Call } from "../../models/calls";
 import Pagination from "../../../shared/components/Pagination/Pagination";
 import { GroupDateValues } from "../../../shared/utils/DateHelpers";
+import { ARCHIVE_CALL_MUTATION } from "../../graphql/calls.mutations";
 
 
 // Store check status by id of call
 // move this to state or store to be shared with list and group
-let checkStatusByIds: { [key: number]: boolean; } = {};
+let checkStatusByIds: { [key: string]: boolean; } = {};
+let bulkIdsToArchive: string[] = [];
+
+interface BulkArchiveButtonProps {
+  onAction: Function
+}
+
+const ArchiveMsg = () => <FormattedMessage id="calls.actions.archive"/>;
+
+/**
+ *
+ * @param call
+ * @param onAction
+ */
+function BulkArchiveButton({onAction}: BulkArchiveButtonProps) {
+
+  return (
+      <Flex>
+        <Flex>
+          <Spacer space="0" p={0}>
+            <Button
+                variant={"destructive"}
+                size={"xSmall"}
+                onClick={() => {
+                  onAction({operation: 'bulk_archive'});
+                }}>
+
+              <ArchiveMsg/>
+            </Button>
+          </Spacer>
+        </Flex>
+      </Flex>
+
+  )
+}
 
 interface IListCallsHeaderProps {
-  onCheck: Function
+  onCheck: Function,
+  showCheckAction: boolean,
+  onBulkArchiveStart: Function
+  onBulkArchiveEnd: Function
 }
 
 /**
  * Header for the page list
  * @param onCheck
+ * @param onBulkArchiveStart
+ * @param onBulkArchiveEnd
+ * @param showCheckAction
  * @constructor
  */
-function ListCallsHeader({onCheck}: IListCallsHeaderProps) {
-  return <Flex className={"page-row"}>
-    <Flex className={ListFieldStyle.checkbox}>
-      <Flex justifyContent="center" alignItems="center">
-        <Checkbox size="small" disabled checked={false}>
-        </Checkbox>
-        <Flex>
-          <Dropdown
-              trigger={<DropdownButton mode="link" variant="primary" size="xSmall"
-                                       iconClose={<ChevronDownOutlined/>}>
+function ListCallsHeader({onCheck, onBulkArchiveStart, onBulkArchiveEnd, showCheckAction}: IListCallsHeaderProps) {
+  const [archive, loading] = useMutation(ARCHIVE_CALL_MUTATION);
+  const [bulkAchieving, setBulkArchiving] = useState(false);
+  let onArchive = () => {
+    bulkIdsToArchive = Object.keys(checkStatusByIds).filter((key: string) => checkStatusByIds[key]);
+    setBulkArchiving(true);
+    onBulkArchiveStart();
+  }
+  let archiveOne = (id: string | undefined) => {
+    if (id) {
+      // HACK, FIXME
 
-              </DropdownButton>} position="bottom" anchor="end">
-            <Menu>
-              {Object.keys(CheckAllActionType).map((action, index) => <MenuItem key={index}
-                                                                                onClick={() => onCheck(action)}>{action}</MenuItem>)}
-            </Menu>
-          </Dropdown>
+      setTimeout(() => {
+        archive({variables: {id: id}})
+      }, 200);
+    }
+  }
+
+  if (bulkAchieving) {
+    console.log(bulkIdsToArchive.length);
+    if (bulkIdsToArchive.length) {
+      archiveOne(bulkIdsToArchive.pop());
+    } else {
+      setBulkArchiving(false);
+      // https://github.com/facebook/react/issues/18178#issuecomment-595846312
+      setTimeout(() => {
+        onBulkArchiveEnd();
+      }, 200);
+    }
+  }
+
+  return <Flex flexDirection={"column"}>
+    <Flex className={"page-row"}>
+      <Flex className={ListFieldStyle.checkbox}>
+        <Flex justifyContent="center" alignItems="center" flexDirection="column">
+          <Flex>
+            <Checkbox size="small" disabled checked={false}>
+            </Checkbox>
+            <Flex>
+              <Dropdown
+                  trigger={<DropdownButton mode="link" variant="primary" size="xSmall"
+                                           iconClose={<ChevronDownOutlined/>}>
+
+                  </DropdownButton>} position="right" anchor="start">
+                <Menu>
+                  {Object.keys(CheckAllActionType).map((action, index) => <MenuItem key={index}
+                                                                                    onClick={() => onCheck(action)}>{action}</MenuItem>)}
+                </Menu>
+              </Dropdown>
+            </Flex>
+          </Flex>
         </Flex>
-
+      </Flex>
+      <Flex className={'xs:hidden'} flexGrow={1}>
+        {
+          LIST_COLUMNS.map((column, index) =>
+              <Flex key={index} className={column.fieldType}>
+                <Typography variant="subheading"><FormattedMessage id={"call.fields." + column.label}/></Typography>
+              </Flex>)
+        }
       </Flex>
     </Flex>
-    <Flex className={'xs:hidden'} flexGrow={1}>
-      {
-        LIST_COLUMNS.map((column, index) =>
-            <Flex key={index} className={column.fieldType}>
-              <Typography variant="subheading"><FormattedMessage id={"call.fields." + column.label}/></Typography>
-            </Flex>)
-      }
-    </Flex>
+    {showCheckAction ?
+        <Flex py={10}>
+          <BulkArchiveButton onAction={onArchive}/> <Flex p={2}>{bulkAchieving ? 'Archiving' : null}</Flex>
+        </Flex> : ""
+    }
   </Flex>
+
       ;
 }
 
@@ -84,18 +165,42 @@ interface ICallsDataContentProps {
  * @param queryInputSearch
  * @constructor
  */
-export const CallsListPage = ({viewStyle, groupByProperty, queryInputSearch}: ICallsDataContentProps) => {
+const CallsListPage = ({
+                         viewStyle,
+                         groupByProperty,
+                         queryInputSearch,
+                       }: ICallsDataContentProps) => {
 
   const [pageSize, setPageSize] = useState(defaultPageSize);
   const [offset, setOffset] = useState(0);
   const [check, setCheck] = useState(CheckAllActionType.none);
-
   const {loading, error, data, refetch} = useQuery(PAGINATED_CALLS_QUERY, {
     variables: {
       offset: offset || 0,
       limit: pageSize,
     }
   });
+
+  // show a mask progress
+  function onBulkArchiveStart() {
+
+  }
+  // show a mask
+  function onBulkArchiveEnd() {
+    setCheck(CheckAllActionType.none);
+    refetch()
+  }
+
+  function onChildAction(event: { operation: string, payload: any }) {
+    if (event.operation === 'archive') {
+      refetch();
+    }
+    if (event.operation === 'check') {
+      const {id} = event.payload;
+      checkStatusByIds[id] = !checkStatusByIds[id]
+      console.log(checkStatusByIds);
+    }
+  }
 
   if (loading) {
     return <Spacer space="s" p="16px 0" borderRadius={8} width={"100%"} margin={"auto"} alignItems="center"
@@ -116,35 +221,54 @@ export const CallsListPage = ({viewStyle, groupByProperty, queryInputSearch}: IC
       }
     </Spacer>;
   }
+
   if (error) {
-    return <p>Error :(</p>;
+    return <Flex flexDirection={"column"} justifyContent={"center"} alignItems={"center"}>
+      <Flex py={4}>Error token :( </Flex>
+      <Button size="small" variant="primary"
+              onClick={(event) => {
+                // TODO , fixme :
+                //  this is just a hack to get new token
+                window.location.reload();
+              }}>
+        <FormattedMessage id="common.retry"/>
+      </Button>
+    </Flex>
+
   }
+
   const paginatedCalls = data.paginatedCalls;
   let newList = paginatedCalls.nodes;
   let totalCount = paginatedCalls.totalCount;
   let pagesCount = Math.ceil(totalCount / pageSize);
 
-  // reset
-  checkStatusByIds = {};
+  //
+
   let checkStatus = null;
-  // TODO, find a better way to handle the check state
-  newList.forEach((e: Call) => {
-    switch (check) {
-      case CheckAllActionType.all :
-        checkStatus = true;
-        break;
-      case CheckAllActionType.none :
-        checkStatus = false;
-        break;
-      case CheckAllActionType.archived :
-        checkStatus = e.is_archived;
-        break;
-      case CheckAllActionType.not_archived :
-        checkStatus = !e.is_archived;
-        break;
-    }
-    checkStatusByIds[e.id] = checkStatus;
-  })
+  if (newList) {
+    // TODO, find a better way to handle the check state
+    newList.forEach((e: Call) => {
+      switch (check) {
+        case CheckAllActionType.all :
+          checkStatus = true;
+          break;
+        case CheckAllActionType.none :
+          checkStatus = false;
+          break;
+        case CheckAllActionType.archived :
+          checkStatus = e.is_archived;
+          break;
+        case CheckAllActionType.not_archived :
+          checkStatus = !e.is_archived;
+          break;
+      }
+      checkStatusByIds[e.id] = checkStatus;
+    })
+  }
+
+
+  // show or hide actions
+  let showCheckAction = !!Object.values(checkStatusByIds).find(e => e)
 
   // TODO, move the filter outside
   if (queryInputSearch) {
@@ -153,23 +277,29 @@ export const CallsListPage = ({viewStyle, groupByProperty, queryInputSearch}: IC
     })
   }
 
+  // At least one checked
+
+
   return (
       <Flex flexDirection="column" height={"100%"} flexGrow={1}>
         <Flex flexDirection="column" flexGrow={1} width={"100%"}>
           {/* header  */}
-          <ListCallsHeader onCheck={setCheck}/>
+          <ListCallsHeader onCheck={setCheck}
+                           onBulkArchiveEnd={onBulkArchiveEnd}
+                           onBulkArchiveStart={onBulkArchiveStart}
+                           showCheckAction={showCheckAction}/>
           {/* onChildAction we can intercept multiple actions here, but because we have only the archive action
                 we just call refresh */}
           {
             viewStyle === ViewStyle.list ? <CallsListStyleData
                     data={newList}
                     checkStatusByIds={checkStatusByIds}
-                    onChildAction={refetch}/> :
+                    onChildAction={onChildAction}/> :
                 <CallsListGroupData
                     groupByProperty={groupByProperty}
                     checkStatusByIds={checkStatusByIds}
                     data={newList}
-                    onChildAction={refetch}/>
+                    onChildAction={onChildAction}/>
           }
         </Flex>
         {/* pagination */}
@@ -207,6 +337,7 @@ export const CallsListPage = ({viewStyle, groupByProperty, queryInputSearch}: IC
 
         </Flex>
       </Flex>
-
   )
 }
+
+export default CallsListPage
