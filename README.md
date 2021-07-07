@@ -3,8 +3,11 @@
 This is an [aircall test](https://github.com/aircall/frontend-hiring-test) implementation.
 
 
+# Install dependencies 
 
-# Getting Started with Create React App
+Run `yarn` to install dependencies 
+
+# Note
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -50,6 +53,11 @@ point to the copied scripts so you can tweak them. At this point you’re on you
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you
 shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t
 customize it when you are ready for it.
+
+
+### `yarn cy:run`
+
+Run cypress integrations and e2e test 
 
 ## Learn More
 
