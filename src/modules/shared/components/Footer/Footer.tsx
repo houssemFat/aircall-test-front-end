@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Spacer, FlagFra, FlagUsa, Flex } from '@aircall/tractor';
+import { Spacer, FlagFra, FlagUsa, Flex, Button, Tractor } from '@aircall/tractor';
 
 
 import { IRootState } from '../../redux/store';
@@ -26,10 +26,12 @@ class Footer extends React.Component<IProps> {
     return (
         <Flex justifyContent={"center"} pb="2" mt="4">
           <Spacer space="s">
-            <FlagUsa className={"cursor-pointer"} width={locale === 'en' ? 24 : 18}
+
+              <FlagUsa id={"footer_i18n_usa"} className={"cursor-pointer"} width={locale === 'en' ? 24 : 18}
                      onClick={() => this.updateLocale("en")}/>
-            <FlagFra className={"cursor-pointer"} width={locale === 'fr' ? 24 : 18}
+            <FlagFra  id={"footer_i18n_fr"}  className={"cursor-pointer"} width={locale === 'fr' ? 24 : 18}
                      onClick={() => this.updateLocale("fr")}/>
+
           </Spacer>
         </Flex>
     )

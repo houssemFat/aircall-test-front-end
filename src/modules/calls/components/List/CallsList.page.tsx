@@ -223,7 +223,9 @@ const CallsListPage = ({
   if (error) {
     return <Flex flexDirection={"column"} justifyContent={"center"} alignItems={"center"}>
       <Flex py={4}>Error token :( </Flex>
-      <Button size="small" variant="primary"
+      <Button size="small"
+              id="error_loading"
+              variant="primary"
               onClick={(event) => {
                 // TODO , fixme :
                 //  this is just a hack to get new token
