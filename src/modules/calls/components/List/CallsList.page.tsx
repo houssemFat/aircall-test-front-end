@@ -97,7 +97,6 @@ function ListCallsHeader({onCheck, onBulkArchiveStart, onBulkArchiveEnd, showChe
   }
 
   if (bulkAchieving) {
-    console.log(bulkIdsToArchive.length);
     if (bulkIdsToArchive.length) {
       archiveOne(bulkIdsToArchive.pop());
     } else {
@@ -198,8 +197,7 @@ const CallsListPage = ({
     if (event.operation === 'check') {
       const {id} = event.payload;
       checkStatusByIds[id] = !checkStatusByIds[id]
-      console.log(checkStatusByIds);
-    }
+      }
   }
 
   if (loading) {

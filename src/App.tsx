@@ -50,13 +50,12 @@ class App extends React.Component<IProps> {
                       <CallsList query={""}/>
                     </Route>
                     <Route path={"/"}>
-                      <Flex flexDirection="column" justifyContent="center">
+                      <Flex flexDirection="column" justifyContent="center" flexGrow={1} width={"400px"} m={"auto"}>
                         <img src={logo} alt="logo"/>
                         <Typography mx="auto" pt="4" variant="heading2">
                           <Greeting/>🙂
                         </Typography>
                         <Flex justifyContent="center" pt="4" alignItems="center">
-
                           <Link to={"/calls"}>
                             <Tractor>
                               <Button mode="link">

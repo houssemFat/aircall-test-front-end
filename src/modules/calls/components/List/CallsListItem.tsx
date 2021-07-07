@@ -52,7 +52,6 @@ const CallListItem = ({call, intl, checked, onChildAction}: CallsListItemProps) 
           <Checkbox
               checked={checked}
               onChange={newStatus => {
-                console.log(newStatus);
                 onChildAction({operation: 'check', payload: {id: call.id, checked: newStatus}})
               }}/>
         </Flex>

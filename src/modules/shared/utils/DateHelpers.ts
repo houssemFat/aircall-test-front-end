@@ -44,7 +44,7 @@ function buildGroupByDateLabel(date: Date, groupKey: GroupDateValues, locale: st
   switch (groupKey) {
     case GroupDateValues.day:
       // only get date
-      return format(date, 'yyyy-MM-dd', {locale: dateFnsLocalesByAppLocale[locale]})
+      return format(date, 'iiii yyyy-MM-dd', {locale: dateFnsLocalesByAppLocale[locale]})
 
     case GroupDateValues.week:
       // TODO, only use single instance of date
@@ -96,8 +96,6 @@ export const groupByDate = (data: Array<any>, propName: string,
     return groups;
   }, {});
 
-  console.log(groups);
-  console.log(groupBy);
   // return of grouped elements as array
   return Object.keys(groups).map((key) => {
     return {

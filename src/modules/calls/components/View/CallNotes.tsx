@@ -51,25 +51,26 @@ function CallNotesComponent({id, intl, notes, onChildAction}: CallViewNotesProps
             </Flex>
           })
         }
-        <Flex mt={15}>
-
-          <Spacer direction="vertical" space={"s"} width={"100%"}>
-            <TextFieldInput
-                value={newNoteContent}
-                onChange={event => setNewNoteContent(event.target.value)}
-                placeholder={intl.formatMessage({id: "calls.actions.add_note_input"})} size="large"/>
-            <Flex justifyContent="flex-end">
-              <Button size="small" variant="primary"
-                      onClick={(event) => {
-                        sendNote({variables: {id: id, content: newNoteContent}})
-                        onChildAction();
-                        event.stopPropagation()
-                      }} disabled={!newNoteContent}>
-                <SendMsg/> {loading ? <SpinnerOutlined/> : <EditOutlined/>}
-              </Button>
-            </Flex>
-          </Spacer>
-        </Flex>
+        <Box width="400px" mx="auto" py={4}>
+          <Flex mt={15}>
+            <Spacer direction="vertical" space={"s"} width={"100%"}>
+              <TextFieldInput
+                  value={newNoteContent}
+                  onChange={event => setNewNoteContent(event.target.value)}
+                  placeholder={intl.formatMessage({id: "calls.actions.add_note_input"})} size="large"/>
+              <Flex justifyContent="flex-end">
+                <Button size="small" variant="primary"
+                        onClick={(event) => {
+                          sendNote({variables: {id: id, content: newNoteContent}})
+                          onChildAction();
+                          event.stopPropagation()
+                        }} disabled={!newNoteContent}>
+                  <SendMsg/> {loading ? <SpinnerOutlined/> : <EditOutlined/>}
+                </Button>
+              </Flex>
+            </Spacer>
+          </Flex>
+        </Box>
       </Flex>
   )
 }
