@@ -64,7 +64,7 @@ function CallViewArchive({call, onChildAction}: CallViewArchiveProps) {
                 onChildAction({operation: 'archive'})
               }} size="xSmall"
               variant="destructive"
-              icon={loading ? SpinnerOutlined : ArchiveOutlined}  shadow={false}
+              icon={loading ? SpinnerOutlined : ArchiveOutlined} shadow={false}
               spin={loading}/>
 
         </Spacer>
@@ -312,14 +312,14 @@ function CallView({locale}: CallsListItemProps) {
   }
 
   return (
-      <Flex flexDirection="column" className="w-full"  flexGrow={1}>
+      <Flex flexDirection="column" className="w-full" flexGrow={1}>
         <Tractor>
           <Flex justifyContent="space-between" py={20}>
-            <Flex>
-              <Spacer space="s" direction="vertical" >
-                <Typography variant="displayM"><ListTitleMsg/></Typography>
-              </Spacer>
-            </Flex>
+            <Spacer space="s">
+              <Flex alignItems={"end"} >
+                <Typography variant="displayM"><ListTitleMsg/></Typography> <Typography px={2} variant="displayS">{id.split('-')[0] + '....'}</Typography>
+              </Flex>
+            </Spacer>
 
             <Spacer space="0" direction="vertical">
               <Button mode="link" size="xSmall" onClick={() => {
