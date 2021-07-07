@@ -142,7 +142,7 @@ function ListCallsHeader({onCheck, onBulkArchiveStart, onBulkArchiveEnd, showChe
     </Flex>
     {showCheckAction ?
         <Flex py={10}>
-          <BulkArchiveButton onAction={onArchive}/> <Flex p={2}>{bulkAchieving ? 'Archiving' : null}</Flex>
+          <BulkArchiveButton onAction={onArchive}/> <Flex p={2}>{bulkAchieving ? 'Archiving ...' : null}</Flex>
         </Flex> : ""
     }
   </Flex>

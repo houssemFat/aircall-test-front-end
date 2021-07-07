@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage, IntlProvider } from 'react-intl';
 import { CallFilled, Tractor, Button, Flex, Typography } from '@aircall/tractor';
@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 
 import {
-  ApolloProvider, useSubscription
+  ApolloProvider
 } from "@apollo/client";
 
 
@@ -21,6 +21,7 @@ import i18nMessages from "./i18n";
 import { IRootState } from "./modules/shared/redux/store";
 import { CallsList, CallView } from "./modules/calls/components";
 import { apolloClient } from "./modules/shared/graphql/client";
+import NotificationWrapper from "./modules/shared/components/NotificationWrapper/NotificationWrapper";
 
 interface IProps {
   locale: string
@@ -71,7 +72,7 @@ class App extends React.Component<IProps> {
                 </Router>
 
               </Flex>
-
+              <NotificationWrapper/>
             </DashboardLayout>
           </IntlProvider>
         </ApolloProvider>

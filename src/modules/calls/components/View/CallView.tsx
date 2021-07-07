@@ -312,7 +312,7 @@ function CallView({locale}: CallsListItemProps) {
   }
 
   return (
-      <Flex flexDirection="column" className="w-full">
+      <Flex flexDirection="column" className="w-full"  flexGrow={1}>
         <Tractor>
           <Flex justifyContent="space-between" py={20}>
             <Flex>
