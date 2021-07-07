@@ -1,0 +1,34 @@
+.page-row {
+    justify-content: space-between;
+    padding: 0.8rem .8rem;
+    flex-basis: 0;
+    border-bottom: solid #eaefef;
+}
+
+.page-row.page-row-data:hover {
+    background: #eaefef;
+}
+
+.page-row .checkbox, .icon {
+    width: 4rem;
+}
+
+.page-row  .phone, .page-row  .text {
+    width: 8rem;
+}
+
+.page-row .createdAt {
+    flex-grow: 1;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .page-row .checkbox, .icon {
+        width: 2rem;
+    }
+
+    .page-row  .phone, .page-row  .text {
+        width: auto;
+        padding: .2rem;
+    }
+}

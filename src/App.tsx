@@ -50,38 +50,41 @@ class App extends React.Component<IProps> {
           <IntlProvider messages={i18nMessages[this.props.locale]} locale={this.props.locale}
                         defaultLocale={this.props.locale}>
             <DashboardLayout>
-              <LatestComment/>
-              <Router>
-                <Switch>
-                  {/* move all call to one route for calls  */}
+              <Flex flexDirection="column" flexGrow={1} height={"100%"}>
+                <Router>
+                  <Switch>
+                    {/* move all call to one route for calls  */}
+                    <Route path="/calls/:id">
+                      <CallView/>
+                    </Route>
+                    <Route path="/calls">
+                      <CallsList query={""}/>
+                    </Route>
+                    <Route path={"/"}>
+                      <Flex flexDirection="column" justifyContent="center">
+                        <img src={logo} alt="logo"/>
+                        <Typography mx="auto" pt="4" variant="heading2">
+                          <Greeting/>🙂
+                        </Typography>
+                        <Flex justifyContent="center" pt="4" alignItems="center">
 
-                  <Route path="/calls/:id">
-                    <CallView/>
-                  </Route>
-                  <Route path="/calls">
-                    <CallsList query={""}/>
-                  </Route>
-                  <Route path={"/"}>
-                    <Flex flexDirection="column" justifyContent="center">
-                      <img src={logo} alt="logo"/>
-                      <Typography mx="auto" pt="4" variant="heading2">
-                        <Greeting/>🙂
-                      </Typography>
-                      <Flex justifyContent="center" pt="4" alignItems="center">
+                          <Link to={"/calls"}>
+                            <Tractor>
+                              <Button mode="link">
+                                <CallFilled width={18}/> <Calls/>
+                              </Button>
+                            </Tractor>
+                          </Link>
 
-                        <Link to={"/calls"}>
-                          <Tractor>
-                            <Button mode="link">
-                              <CallFilled width={18}/> <Calls/>
-                            </Button>
-                          </Tractor>
-                        </Link>
-
+                        </Flex>
                       </Flex>
-                    </Flex>
-                  </Route>
-                </Switch>
-              </Router>
+                    </Route>
+                  </Switch>
+                </Router>
+
+                <LatestComment/>
+              </Flex>
+
             </DashboardLayout>
           </IntlProvider>
         </ApolloProvider>

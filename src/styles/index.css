@@ -1,5 +1,5 @@
 @import url("./reset.css");
-@import url("./font.css");
+/*@import url("./font.css");*/
 @import url("./page.css");
 
 body {
@@ -42,3 +42,25 @@ code {
     margin: 0 auto;
 }
 
+@media only screen and (max-width: 600px) {
+    /* TODO move to another file  */
+    .xs\:hidden {
+        /* use style component to override Reactor */
+        display: none !important;
+    }
+
+    .xs\:flex-column {
+        /* use style component to override Reactor */
+        flex-direction: column !important;
+    }
+
+    .xs\:align-left {
+        /* use style component to override Reactor */
+        align-items: start !important;
+    }
+
+    xs\:width-auto {
+        width: auto;
+    }
+
+}
