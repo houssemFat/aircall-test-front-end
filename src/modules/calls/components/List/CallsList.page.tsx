@@ -88,8 +88,8 @@ function ListCallsHeader({onCheck, onBulkArchiveStart, onBulkArchiveEnd, showChe
   }
   let archiveOne = (id: string | undefined) => {
     if (id) {
-      // HACK, FIXME
-
+      // FIXME , we should set a little time to browser to handle loop
+      // Find better way to handle calls
       setTimeout(() => {
         archive({variables: {id: id}})
       }, 200);
@@ -101,6 +101,8 @@ function ListCallsHeader({onCheck, onBulkArchiveStart, onBulkArchiveEnd, showChe
       archiveOne(bulkIdsToArchive.pop());
     } else {
       setBulkArchiving(false);
+      // Fixme
+      // Find a better way to handle this
       // https://github.com/facebook/react/issues/18178#issuecomment-595846312
       setTimeout(() => {
         onBulkArchiveEnd();
@@ -184,6 +186,7 @@ const CallsListPage = ({
   function onBulkArchiveStart() {
 
   }
+
   // show a mask
   function onBulkArchiveEnd() {
     setCheck(CheckAllActionType.none);
@@ -197,7 +200,7 @@ const CallsListPage = ({
     if (event.operation === 'check') {
       const {id} = event.payload;
       checkStatusByIds[id] = !checkStatusByIds[id]
-      }
+    }
   }
 
   if (loading) {

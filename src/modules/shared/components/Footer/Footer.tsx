@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Spacer, FlagFra, FlagUsa, Flex, Button, Tractor } from '@aircall/tractor';
+import { Spacer, FlagFra, FlagUsa, Flex } from '@aircall/tractor';
 
 
 import { IRootState } from '../../redux/store';

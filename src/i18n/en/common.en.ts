@@ -1,6 +1,6 @@
 const common = {
   'common.welcome': 'Welcome',
-  'common.calls': 'Calls',
+  'common.calls': 'Start',
   'common.group_by': 'Group by',
   'common.save': 'Save',
   'common.back': 'Back',
