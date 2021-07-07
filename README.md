@@ -1,6 +1,6 @@
-# Introdction
+# Introduction
 
-This is an [aircall test](https://github.com/aircall/frontend-hiring-test) implementation.
+This is a solution to [aircall test](https://github.com/aircall/frontend-hiring-test).
 
 
 # Install dependencies 
