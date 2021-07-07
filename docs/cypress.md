@@ -1,0 +1,3 @@
+# Guide for Cypress
+Guide and best practices to use cypress in your end-to-end tests and integration tests.
+.....
