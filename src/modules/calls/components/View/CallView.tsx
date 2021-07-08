@@ -96,6 +96,7 @@ const ListTitleMsg = () => <FormattedMessage id="calls.view.title"/>;
 
 function CallView({locale}: CallsListItemProps) {
   const {id} = useParams<RouterParams>()
+
   const history = useHistory();
   const {loading, error, data, refetch} = useQuery(CALL_QUERY, {
     variables: {

@@ -59,6 +59,11 @@ customize it when you are ready for it.
 
 Run cypress integrations and e2e test 
 
+### Issue with babel version because of the conflict between CRA and storybook
+
+
+[see more here](https://github.com/storybookjs/storybook/issues/5183)
+
 ## Learn More
 
 You can learn more in
